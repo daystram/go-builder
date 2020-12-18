@@ -12,8 +12,8 @@ $JOBS
 go-builder:$VERSION:
   stage: build
   script:
-    - docker build --tag go-builder:$VERSION $VERSION/
-    - docker push go-builder:$VERSION
+    - docker build --tag $CI_REGISTRY_IMAGE:$VERSION $VERSION/
+    - docker push $CI_REGISTRY_IMAGE:$VERSION
 EOM
     fi
 done
@@ -31,7 +31,7 @@ stages:
   - build
 
 before_script:
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  - echo "$CI_REGISTRY_PASSWORD" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
 
 $JOBS
 EOM
