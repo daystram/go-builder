@@ -9,10 +9,19 @@ for VERSION in *; do
         read -r -d '' JOBS << EOM
 $JOBS
 
-go-builder:$VERSION:
+build go-builder:$VERSION:
   stage: build
   script:
     - docker build --tag go-builder:$VERSION $VERSION/
+
+push go-builder:$VERSION:
+  stage: push
+  dependencies:
+    - build go-builder:$VERSION
+  script:
+    - docker images
+    - echo "Pushing $VERSION..."
+  when: manual
 EOM
     fi
 done
@@ -31,11 +40,6 @@ stages:
   - push
 
 $JOBS
-
-deploy:
-  stage: push
-  script:
-    - echo "Pushing image..."
 EOM
 
 echo "Done!"
