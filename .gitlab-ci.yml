@@ -2,17 +2,17 @@ stages:
   - generate
   - trigger
 
-generate_config:
+generate-config:
   stage: generate
   script: ./generate-jobs.sh > configs.yml
   artifacts:
     paths:
       - configs.yml
 
-trigger_pipelines:
+trigger-pipelines:
   stage: trigger
   trigger:
     include:
       - artifact: configs.yml
-        job: generate_config
+        job: generate-config
     strategy: depend
