@@ -7,12 +7,12 @@ generate-config:
   script: bash generate-jobs.sh
   artifacts:
     paths:
-      - configs.yml
+      - config.yml
 
 trigger-pipelines:
   stage: trigger
   trigger:
     include:
-      - artifact: configs.yml
+      - artifact: config.yml
         job: generate-config
     strategy: depend
