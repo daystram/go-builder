@@ -4,7 +4,7 @@ stages:
 
 generate-config:
   stage: generate
-  script: ./generate-jobs.sh > configs.yml
+  script: bash generate-jobs.sh
   artifacts:
     paths:
       - configs.yml
