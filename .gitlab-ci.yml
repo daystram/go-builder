@@ -14,5 +14,5 @@ trigger_pipelines:
   trigger:
     include:
       - artifact: configs.yml
-        job: generate-config
+        job: generate_config
     strategy: depend
