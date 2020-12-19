@@ -9,11 +9,18 @@ for VERSION in *; do
         read -r -d '' JOBS << EOM
 $JOBS
 
-go-builder:$VERSION:
+build go-builder:$VERSION:
   stage: build
   script:
     - docker build --tag $CI_REGISTRY_IMAGE:$VERSION $VERSION/
+
+push go-builder:$VERSION:
+  stage: push
+  needs: ["build go-builder:$VERSION"]
+  script:
+    - docker build --tag $CI_REGISTRY_IMAGE:$VERSION $VERSION/
     - docker push $CI_REGISTRY_IMAGE:$VERSION
+  when: manual
 EOM
     fi
 done
@@ -29,6 +36,7 @@ services:
 
 stages:
   - build
+  - push
 
 before_script:
   - echo "$CI_REGISTRY_PASSWORD" | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
